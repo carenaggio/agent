@@ -22,8 +22,8 @@ import (
 	"os"
 	"time"
 
-	"agent/inventory"
-	"agent/output"
+	"github.com/carenaggio/agent/inventory"
+	"github.com/carenaggio/agent/output"
 )
 
 func getEnv(key, fallback string) string {

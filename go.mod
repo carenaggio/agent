@@ -1,4 +1,4 @@
-module agent
+module github.com/carenaggio/agent
 
 go 1.18
 
