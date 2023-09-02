@@ -22,14 +22,16 @@ import (
 )
 
 type Inventory struct {
-	Hostname      string        `json:"hostname,omitempty"`
-	Distribution  *Distribution `json:"distribution,omitempty"`
-	KernelVersion string        `json:"kernel_version,omitempty"`
-	InstalledPkgs []Package     `json:"installed_packages,omitempty"`
+	Hostname      string                 `json:"hostname,omitempty"`
+	Distribution  *Distribution          `json:"distribution,omitempty"`
+	KernelVersion string                 `json:"kernel_version,omitempty"`
+	InstalledPkgs []Package              `json:"installed_packages,omitempty"`
+	Modules       map[string]interface{} `json:"modules,omitempty"`
 }
 
 func GetInventory() (Inventory, error) {
 	var all_errors error
+
 	hostnameInfo, err := GetHostname()
 	all_errors = errors.Join(all_errors, err)
 
@@ -47,11 +49,15 @@ func GetInventory() (Inventory, error) {
 	installedPkgs, err := GetInstalledPackages(packaging_system)
 	all_errors = errors.Join(all_errors, err)
 
+	Modules, err := GetModules()
+	all_errors = errors.Join(all_errors, err)
+
 	inventory := Inventory{
 		Hostname:      hostnameInfo,
 		Distribution:  DistributionInfo,
 		KernelVersion: kernelVersion,
 		InstalledPkgs: installedPkgs,
+		Modules:       Modules,
 	}
 	return inventory, all_errors
 }
