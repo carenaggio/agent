@@ -23,7 +23,7 @@ import (
 	"time"
 
 	"github.com/carenaggio/agent/inventory"
-	"github.com/carenaggio/agent/output"
+	"github.com/carenaggio/agent/transport"
 )
 
 func getEnv(key, fallback string) string {
@@ -55,7 +55,7 @@ func main() {
 		if err != nil {
 			errlog.Println("Error getting inventory:\n", err)
 		}
-		err = output.Post(payloadBytes, endpoint)
+		err = transport.Post(payloadBytes, endpoint)
 		if err != nil {
 			errlog.Println("Error posting data:\n", err)
 		}
@@ -68,7 +68,7 @@ func main() {
 			if err != nil {
 				errlog.Println("Error getting inventory:\n", err)
 			}
-			err = output.Post(payloadBytes, endpoint)
+			err = transport.Post(payloadBytes, endpoint)
 			if err != nil {
 				errlog.Println("Error posting data:\n", err)
 			}

@@ -14,18 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package output
+package transport
 
 import (
-	"bytes"
-	"net/http"
+	"errors"
+	"strings"
 )
 
-func httpPost(data []byte, endpoint string) error {
-	resp, err := http.Post(endpoint, "application/json", bytes.NewBuffer(data))
-	if err != nil {
-		return err
+func Post(data []byte, endpoint string) error {
+	switch {
+	case endpoint == "":
+		return Stdout(data)
+	case strings.HasPrefix(endpoint, "http://") || strings.HasPrefix(endpoint, "https://"):
+		return httpPost(data, endpoint)
+	default:
+		return errors.New("the requested endpoint schema is not implemented")
 	}
-	resp.Body.Close()
-	return nil
 }
